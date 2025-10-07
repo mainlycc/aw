@@ -4,7 +4,7 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { IconEye, IconLoader2, IconUserPlus, IconX, IconEdit } from "@tabler/icons-react"
+import { IconLoader2, IconUserPlus, IconX, IconEdit } from "@tabler/icons-react"
 import { createClient } from "@/lib/supabase/client"
 
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Tabs,
@@ -219,7 +218,7 @@ export function StudentDetailsDialog({
           notes: studentFormData.notes.trim() || null,
           active: studentFormData.active,
           updated_at: new Date().toISOString()
-        })
+        } as any)
         .eq('id', details.student.id)
 
       if (error) throw error
@@ -262,7 +261,7 @@ export function StudentDetailsDialog({
           last_name: newParentData.last_name.trim(),
           email: newParentData.email.trim() || null,
           phone: newParentData.phone.trim() || null
-        })
+        } as any)
         .select()
         .single()
 
@@ -273,10 +272,10 @@ export function StudentDetailsDialog({
         .from('student_parents')
         .insert({
           student_id: details.student.id,
-          parent_id: parentData.id,
+          parent_id: (parentData as any).id,
           relation: newParentData.relation,
           is_primary: newParentData.is_primary
-        })
+        } as any)
 
       if (relationError) throw relationError
 

@@ -225,7 +225,7 @@ export function EditTutorProfileDialog({
         console.log('Tworzenie nowego profilu...')
         result = await supabase
           .from('tutors')
-          .insert(tutorPayload)
+          .insert(tutorPayload as any)
           .select()
         
         if (result.error) {
@@ -237,14 +237,14 @@ export function EditTutorProfileDialog({
           throw new Error('Nie otrzymano danych po zapisie')
         }
 
-        savedTutorId = result.data[0].id
+        savedTutorId = (result.data[0] as any).id
       } else {
         // Aktualizuj istniejący rekord
         console.log('Aktualizacja istniejącego profilu...')
         result = await supabase
           .from('tutors')
           .update(tutorPayload)
-          .eq('id', tutor.id)
+          .eq('id', (tutor as any).id)
           .select()
         
         if (result.error) {
@@ -272,7 +272,7 @@ export function EditTutorProfileDialog({
 
         const { error: subjectsError } = await supabase
           .from('tutor_subjects')
-          .insert(subjectsToInsert)
+          .insert(subjectsToInsert as any)
 
         if (subjectsError) {
           console.error('Błąd podczas zapisywania przedmiotów:', subjectsError)

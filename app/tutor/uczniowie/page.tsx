@@ -3,6 +3,7 @@ import { getProfile, getStudents } from "@/lib/supabase/queries"
 import { StudentsDataTable } from "@/components/students-data-table"
 import { AddStudentDialog } from "@/components/add-student-dialog"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { PageTitleSetter } from "@/components/page-title-setter"
 import type { Profile } from "@/types"
 
 // Wymuś dynamiczne renderowanie - zawsze pobieraj świeże dane
@@ -40,11 +41,8 @@ export default async function TutorStudentsPage() {
   const { data: tutorData } = await supabase
     .from('tutors')
     .select('*')
-    .eq('profile_id', profile.id)
+    .eq('profile_id', (profile as any).id)
     .single()
-
-  // Jeśli nie ma danych tutora, wyświetl pustą stronę z tabelą
-  const tutorName = tutorData ? `${tutorData.first_name} ${tutorData.last_name}` : 'Korepetytor'
 
   // Pobierz przedmioty tutora (tylko te które ma w profilu)
   let tutorSubjects: Array<{
@@ -64,7 +62,7 @@ export default async function TutorStudentsPage() {
           name
         )
       `)
-      .eq('tutor_id', tutorData.id)
+      .eq('tutor_id', (tutorData as any).id)
 
     if (subjectsData) {
       tutorSubjects = (subjectsData as any[])
@@ -89,11 +87,11 @@ export default async function TutorStudentsPage() {
       students (*),
       subjects (*)
     `)
-    .eq('tutor_id', tutorData.id)
+    .eq('tutor_id', (tutorData as any).id)
     .order('created_at', { ascending: false }) : { data: null }
 
   // Przekształć dane na format dla tabeli
-  const studentsData = enrollmentsData?.map(enrollment => {
+  const studentsData = enrollmentsData?.map((enrollment: any) => {
     const student = enrollment.students
     const subject = enrollment.subjects
     const status = enrollment.status === 'active' ? 'Aktywny' : 
@@ -118,18 +116,16 @@ export default async function TutorStudentsPage() {
 
   return (
     <div className="space-y-6">
+      <PageTitleSetter title="Moi Uczniowie" />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Moi Uczniowie
-          </h1>
           <p className="text-muted-foreground">
             Lista uczniów przypisanych do Twoich przedmiotów
           </p>
         </div>
         {tutorData ? (
           <AddStudentDialog 
-            tutorId={tutorData.id}
+            tutorId={(tutorData as any).id}
             tutorSubjects={tutorSubjects}
             existingStudents={allStudents}
           />

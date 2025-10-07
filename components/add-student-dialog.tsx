@@ -202,7 +202,7 @@ export function AddStudentDialog({
           notes: newStudentData.notes || null,
           active: true,
           created_by: user.id
-        })
+        } as any)
         .select()
         .single()
 
@@ -219,13 +219,13 @@ export function AddStudentDialog({
       const { error: enrollmentError } = await supabase
         .from('enrollments')
         .insert({
-          student_id: studentData.id,
+          student_id: (studentData as any).id,
           subject_id: newStudentData.subject_id,
           tutor_id: tutorId,
           rate: null, // Stawka nie jest już wybierana przez tutora
           start_date: newStudentData.start_date,
           status: 'active'
-        })
+        } as any)
 
       if (enrollmentError) {
         console.error("Enrollment error:", enrollmentError)
@@ -247,7 +247,7 @@ export function AddStudentDialog({
               last_name: parentData.last_name.trim(),
               email: parentData.email.trim() || null,
               phone: parentData.phone.trim() || null
-            })
+            } as any)
             .select()
             .single()
 
@@ -261,11 +261,11 @@ export function AddStudentDialog({
           await supabase
             .from('student_parents')
             .insert({
-              student_id: studentData.id,
-              parent_id: parentRecord.id,
+              student_id: (studentData as any).id,
+              parent_id: (parentRecord as any).id,
               relation: parentData.relation,
               is_primary: parentData.is_primary
-            })
+            } as any)
         }
       }
 
@@ -348,7 +348,7 @@ export function AddStudentDialog({
           rate: null, // Stawka nie jest już wybierana przez tutora
           start_date: existingStudentData.start_date,
           status: 'active'
-        })
+        } as any)
 
       if (enrollmentError) {
         console.error("Enrollment error:", enrollmentError)

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { WeeklySchedule } from "@/components/weekly-schedule"
 import { createClient } from "@/lib/supabase/client"
+import { usePageTitle } from "@/lib/contexts/page-title-context"
 
 interface TutorData {
   id: string
@@ -12,6 +13,8 @@ interface TutorData {
 }
 
 export default function TutorKalendarzPage() {
+  usePageTitle("Kalendarz")
+  
   const router = useRouter()
   const supabase = createClient()
   const [tutor, setTutor] = useState<TutorData | null>(null)
@@ -67,11 +70,7 @@ export default function TutorKalendarzPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Kalendarz</h1>
-        <p className="text-muted-foreground">Twój grafik zajęć</p>
-      </div>
-
+      <p className="text-muted-foreground">Twój grafik zajęć</p>
       <WeeklySchedule tutorName={fullName} />
     </div>
   )

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { getProfile } from "@/lib/supabase/queries"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { PageTitleSetter } from "@/components/page-title-setter"
 
 /**
  * Dashboard dla tutora
@@ -18,7 +19,7 @@ export default async function TutorDashboardPage() {
       const { data } = await supabase
         .from('tutors')
         .select('*')
-        .eq('profile_id', profile.id)
+        .eq('profile_id', (profile as any).id)
         .single()
       
       tutorData = data
@@ -27,12 +28,10 @@ export default async function TutorDashboardPage() {
 
   return (
     <div className="space-y-6">
+      <PageTitleSetter title="Dashboard Tutora" />
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Dashboard Tutora
-        </h1>
         <p className="text-muted-foreground">
-          Witaj, {tutorData ? `${tutorData.first_name} ${tutorData.last_name}` : 'Tutorze'}! 👋
+          Witaj, {tutorData ? `${(tutorData as any).first_name} ${(tutorData as any).last_name}` : 'Tutorze'}! 👋
         </p>
       </div>
 

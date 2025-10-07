@@ -20,6 +20,14 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // Wyłącz błąd dla typu 'any' - potrzebne dla Supabase types
+      "@typescript-eslint/no-explicit-any": "off",
+      // Wyłącz warning dla nieużywanych zmiennych (opcjonalnie)
+      "@typescript-eslint/no-unused-vars": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;

@@ -260,6 +260,49 @@ export interface Database {
           updated_at?: string
         }
       }
+
+      // Tabela lessons - Lekcje
+      lessons: {
+        Row: {
+          id: string
+          enrollment_id: string
+          tutor_id: string
+          student_id: string
+          subject_id: string
+          date: string
+          hours: number
+          rate: number
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          enrollment_id: string
+          tutor_id: string
+          student_id: string
+          subject_id: string
+          date: string
+          hours: number
+          rate: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          enrollment_id?: string
+          tutor_id?: string
+          student_id?: string
+          subject_id?: string
+          date?: string
+          hours?: number
+          rate?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

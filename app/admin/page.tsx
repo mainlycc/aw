@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { PageTitleSetter } from "@/components/page-title-setter"
 import { 
   getActiveStudents, 
   getActiveTutors, 
@@ -29,10 +30,8 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
+      <PageTitleSetter title="Dashboard Admina" />
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Dashboard Admina
-        </h1>
         <p className="text-muted-foreground">
           Witaj w panelu administratora Akademii Wiedzy! 👋
         </p>

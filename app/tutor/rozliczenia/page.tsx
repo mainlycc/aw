@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { getProfile } from "@/lib/supabase/queries"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { PageTitleSetter } from "@/components/page-title-setter"
 import type { Profile } from "@/types"
 
 // Wymuś dynamiczne renderowanie - zawsze pobieraj świeże dane
@@ -38,7 +39,7 @@ export default async function TutorRozliczeniaPage() {
   const { data: tutorData } = await supabase
     .from('tutors')
     .select('*')
-    .eq('profile_id', profile.id)
+    .eq('profile_id', (profile as any).id)
     .single()
 
   if (!tutorData) {
@@ -62,11 +63,9 @@ export default async function TutorRozliczeniaPage() {
 
   return (
     <div className="space-y-6">
+      <PageTitleSetter title="Rozliczenia" />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Rozliczenia
-          </h1>
           <p className="text-muted-foreground">
             Twoje wynagrodzenia i płatności
           </p>

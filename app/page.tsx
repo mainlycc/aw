@@ -11,10 +11,13 @@ export default async function HomePage() {
     // Pobierz profil użytkownika z rolą
     const { data: profile } = await getProfile(supabase, user.id)
     
-    if (profile?.role === 'admin') {
-      redirect("/admin")
-    } else if (profile?.role === 'tutor') {
-      redirect("/tutor")
+    if (profile) {
+      const userRole = (profile as any).role
+      if (userRole === 'admin') {
+        redirect("/admin")
+      } else if (userRole === 'tutor') {
+        redirect("/tutor")
+      }
     }
     
     // Fallback jeśli rola nie jest zdefiniowana

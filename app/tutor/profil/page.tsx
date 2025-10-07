@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { getProfile } from "@/lib/supabase/queries"
 import { TutorInfoCard } from "@/components/tutor-info-card"
+import { PageTitleSetter } from "@/components/page-title-setter"
 import type { Profile } from "@/types"
 
 // Wymuś dynamiczne renderowanie - zawsze pobieraj świeże dane
@@ -78,7 +79,7 @@ export default async function TutorProfilePage() {
           color
         )
       `)
-      .eq('tutor_id', tutorData.id)
+      .eq('tutor_id', (tutorData as any).id)
 
     console.log('Pobrane przedmioty tutora:', { subjectsData, subjectsError })
 
@@ -96,10 +97,8 @@ export default async function TutorProfilePage() {
 
   return (
     <div className="space-y-6">
+      <PageTitleSetter title="Mój Profil" />
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Mój Profil
-        </h1>
         <p className="text-muted-foreground">
           Zarządzaj swoimi danymi kontaktowymi i informacjami o sobie
         </p>
