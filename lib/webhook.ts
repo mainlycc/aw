@@ -85,7 +85,7 @@ export class WebhookService {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const result = await response.json()
+      await response.json()
       return { success: true }
     } catch (error) {
       console.error('Błąd wysyłania danych do webhooka:', error)

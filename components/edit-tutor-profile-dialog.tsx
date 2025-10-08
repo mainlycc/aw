@@ -206,7 +206,7 @@ export function EditTutorProfileDialog({
         // Twórz nowy rekord
         console.log('Tworzenie nowego profilu...')
         
-        const insertPayload: Database['public']['Tables']['tutors']['Insert'] = {
+        const insertPayload = {
           first_name: formData.first_name.trim(),
           last_name: formData.last_name.trim(),
           email: formData.email.trim() || null,
@@ -220,7 +220,7 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .insert(insertPayload)
+          .insert(insertPayload as Database['public']['Tables']['tutors']['Insert'])
           .select()
         
         if (result.error) {
@@ -237,7 +237,7 @@ export function EditTutorProfileDialog({
         // Aktualizuj istniejący rekord
         console.log('Aktualizacja istniejącego profilu...')
         
-        const updatePayload: Database['public']['Tables']['tutors']['Update'] = {
+        const updatePayload = {
           first_name: formData.first_name.trim(),
           last_name: formData.last_name.trim(),
           email: formData.email.trim() || null,
@@ -251,7 +251,7 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .update(updatePayload)
+          .update(updatePayload as Database['public']['Tables']['tutors']['Update'])
           .eq('id', tutor.id)
           .select()
         
@@ -272,15 +272,15 @@ export function EditTutorProfileDialog({
           .eq('tutor_id', savedTutorId)
 
         // Dodaj nowe przypisania
-        const subjectsToInsert: Database['public']['Tables']['tutor_subjects']['Insert'][] = tutorSubjects.map(s => ({
+        const subjectsToInsert = tutorSubjects.map(s => ({
           tutor_id: savedTutorId,
           subject_id: s.subject_id,
-          level: s.level as Database['public']['Enums']['teaching_level']
+          level: s.level
         }))
 
         const { error: subjectsError } = await supabase
           .from('tutor_subjects')
-          .insert(subjectsToInsert)
+          .insert(subjectsToInsert as Database['public']['Tables']['tutor_subjects']['Insert'][])
 
         if (subjectsError) {
           console.error('Błąd podczas zapisywania przedmiotów:', subjectsError)

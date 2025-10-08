@@ -12,9 +12,9 @@ export type Json =
 
 // Enumy z bazy danych
 export type EnrollmentStatus = 'active' | 'completed' | 'cancelled' | 'on_hold'
-export type UserRole = 'admin' | 'tutor'
+export type UserRole = 'admin' | 'tutor' | 'pending'
 export type Kinship = 'guardian' | 'mother' | 'father' | 'grandparent' | 'other'
-export type TeachingLevel = 'basic' | 'intermediate' | 'advanced' | 'expert'
+export type TeachingLevel = 'basic' | 'intermediate' | 'advanced'
 
 export interface Database {
   public: {
@@ -27,6 +27,7 @@ export interface Database {
           subject_id: string
           tutor_id: string | null
           rate: number | null
+          level: TeachingLevel
           status: EnrollmentStatus
           start_date: string
           end_date: string | null
@@ -38,6 +39,7 @@ export interface Database {
           subject_id: string
           tutor_id?: string | null
           rate?: number | null
+          level?: TeachingLevel
           status?: EnrollmentStatus
           start_date?: string
           end_date?: string | null
@@ -49,6 +51,7 @@ export interface Database {
           subject_id?: string
           tutor_id?: string | null
           rate?: number | null
+          level?: TeachingLevel
           status?: EnrollmentStatus
           start_date?: string
           end_date?: string | null
@@ -98,16 +101,19 @@ export interface Database {
         Row: {
           id: string
           role: UserRole
+          email: string
           created_at: string
         }
         Insert: {
           id: string
           role?: UserRole
+          email: string
           created_at?: string
         }
         Update: {
           id?: string
           role?: UserRole
+          email?: string
           created_at?: string
         }
       }
@@ -299,6 +305,62 @@ export interface Database {
           hours?: number
           rate?: number
           notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+
+      // Tabela billing_months - Miesiące rozliczeniowe
+      billing_months: {
+        Row: {
+          id: string
+          tutor_id: string
+          month_name: string
+          month_year: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tutor_id: string
+          month_name: string
+          month_year: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tutor_id?: string
+          month_name?: string
+          month_year?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+
+      // Tabela billing_student_hours - Godziny uczniów w miesiącu
+      billing_student_hours: {
+        Row: {
+          id: string
+          billing_month_id: string
+          student_id: string
+          hours: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          billing_month_id: string
+          student_id: string
+          hours: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          billing_month_id?: string
+          student_id?: string
+          hours?: number
           created_at?: string
           updated_at?: string
         }

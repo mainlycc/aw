@@ -9,6 +9,8 @@ import {
   IconInnerShadowTop,
   IconUser,
   IconUsers,
+  IconChartBar,
+  IconUserPlus,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -36,6 +38,11 @@ const adminNavMain = [
     icon: IconDashboard,
   },
   {
+    title: "Oczekujący",
+    url: "/admin/oczekujacy",
+    icon: IconUserPlus,
+  },
+  {
     title: "Uczniowie",
     url: "/admin/uczniowie",
     icon: IconUsers,
@@ -44,6 +51,11 @@ const adminNavMain = [
     title: "Korepetytorzy",
     url: "/admin/korepetytorzy",
     icon: IconUser,
+  },
+  {
+    title: "Raporty",
+    url: "/admin/raporty",
+    icon: IconChartBar,
   },
 ]
 

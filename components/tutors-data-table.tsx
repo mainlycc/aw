@@ -44,7 +44,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { TutorDetailsDialog } from "@/components/tutor-details-dialog"
 
 interface TutorData {
   id: string
@@ -176,14 +175,11 @@ export function TutorsDataTable({ data }: TutorsDataTableProps) {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [isDeleting, setIsDeleting] = useState(false)
-  const [selectedTutorId, setSelectedTutorId] = useState<string | null>(null)
-  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
   const handleTutorClick = (tutorId: string) => {
-    setSelectedTutorId(tutorId)
-    setDetailsDialogOpen(true)
+    router.push(`/admin/korepetytorzy/${tutorId}`)
   }
 
   const columns = React.useMemo(() => getColumns(handleTutorClick), [])
@@ -416,14 +412,6 @@ export function TutorsDataTable({ data }: TutorsDataTableProps) {
         </div>
       </div>
 
-      {/* Dialog ze szczegółami korepetytora */}
-      {selectedTutorId && (
-        <TutorDetailsDialog 
-          tutorId={selectedTutorId}
-          open={detailsDialogOpen}
-          onOpenChange={setDetailsDialogOpen}
-        />
-      )}
     </div>
   )
 }

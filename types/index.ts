@@ -96,3 +96,6 @@ export interface EnrollmentFormData {
   start_date: string
   end_date?: string
 }
+
+// Typy dla rozliczeń
+export * from './billing'

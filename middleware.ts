@@ -79,6 +79,15 @@ export async function middleware(request: NextRequest) {
 
     const userRole = profile?.role
 
+    // Blokuj użytkowników z rolą 'pending' - mogą tylko wylogować się
+    if (userRole === 'pending') {
+      // Wyloguj użytkownika i przekieruj na stronę logowania z komunikatem
+      await supabase.auth.signOut()
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('message', 'pending')
+      return NextResponse.redirect(loginUrl)
+    }
+
     // Przekierowania dla zalogowanych użytkowników
     const pathname = request.nextUrl.pathname
 
