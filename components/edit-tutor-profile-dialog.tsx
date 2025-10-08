@@ -220,7 +220,7 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .insert(insertPayload as Database['public']['Tables']['tutors']['Insert'])
+          .insert(insertPayload as any)
           .select()
         
         if (result.error) {
@@ -251,7 +251,7 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .update(updatePayload as Database['public']['Tables']['tutors']['Update'])
+          .update(updatePayload as any)
           .eq('id', tutor.id)
           .select()
         
@@ -280,7 +280,7 @@ export function EditTutorProfileDialog({
 
         const { error: subjectsError } = await supabase
           .from('tutor_subjects')
-          .insert(subjectsToInsert as Database['public']['Tables']['tutor_subjects']['Insert'][])
+          .insert(subjectsToInsert as any)
 
         if (subjectsError) {
           console.error('Błąd podczas zapisywania przedmiotów:', subjectsError)
