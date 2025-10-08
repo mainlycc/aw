@@ -178,11 +178,11 @@ export function TutorsDataTable({ data }: TutorsDataTableProps) {
   const router = useRouter()
   const supabase = createClient()
 
-  const handleTutorClick = (tutorId: string) => {
+  const handleTutorClick = React.useCallback((tutorId: string) => {
     router.push(`/admin/korepetytorzy/${tutorId}`)
-  }
+  }, [router])
 
-  const columns = React.useMemo(() => getColumns(handleTutorClick), [])
+  const columns = React.useMemo(() => getColumns(handleTutorClick), [handleTutorClick])
 
   const table = useReactTable({
     data,
