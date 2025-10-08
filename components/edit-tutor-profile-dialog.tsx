@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { IconUserEdit, IconLoader2, IconPlus, IconX } from "@tabler/icons-react"
 import { createClient } from "@/lib/supabase/client"
+import type { Database } from "@/types/database.types"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -198,34 +199,28 @@ export function EditTutorProfileDialog({
     setIsLoading(true)
 
     try {
-      const tutorPayload = {
-        first_name: formData.first_name.trim(),
-        last_name: formData.last_name.trim(),
-        email: formData.email.trim() || null,
-        phone: formData.phone.trim() || null,
-        bio: formData.bio.trim() || null,
-        active: true,
-        profile_id: tutor.profile_id,
-        updated_at: new Date().toISOString(),
-      }
-
-      console.log('Zapisywanie profilu tutora:', {
-        isNewProfile,
-        tutorId: tutor.id,
-        profileId: tutor.profile_id,
-        payload: tutorPayload,
-        subjects: tutorSubjects
-      })
-
       let savedTutorId: string
       let result
 
       if (isNewProfile) {
         // Twórz nowy rekord
         console.log('Tworzenie nowego profilu...')
+        
+        const insertPayload: Database['public']['Tables']['tutors']['Insert'] = {
+          first_name: formData.first_name.trim(),
+          last_name: formData.last_name.trim(),
+          email: formData.email.trim() || null,
+          phone: formData.phone.trim() || null,
+          bio: formData.bio.trim() || null,
+          active: true,
+          profile_id: tutor.profile_id || null,
+        }
+
+        console.log('Payload dla insert:', insertPayload)
+
         result = await supabase
           .from('tutors')
-          .insert(tutorPayload as any)
+          .insert(insertPayload)
           .select()
         
         if (result.error) {
@@ -237,14 +232,27 @@ export function EditTutorProfileDialog({
           throw new Error('Nie otrzymano danych po zapisie')
         }
 
-        savedTutorId = (result.data[0] as any).id
+        savedTutorId = result.data[0].id
       } else {
         // Aktualizuj istniejący rekord
         console.log('Aktualizacja istniejącego profilu...')
+        
+        const updatePayload: Database['public']['Tables']['tutors']['Update'] = {
+          first_name: formData.first_name.trim(),
+          last_name: formData.last_name.trim(),
+          email: formData.email.trim() || null,
+          phone: formData.phone.trim() || null,
+          bio: formData.bio.trim() || null,
+          active: true,
+          updated_at: new Date().toISOString(),
+        }
+
+        console.log('Payload dla update:', updatePayload)
+
         result = await supabase
           .from('tutors')
-          .update(tutorPayload)
-          .eq('id', (tutor as any).id)
+          .update(updatePayload)
+          .eq('id', tutor.id)
           .select()
         
         if (result.error) {
@@ -264,15 +272,15 @@ export function EditTutorProfileDialog({
           .eq('tutor_id', savedTutorId)
 
         // Dodaj nowe przypisania
-        const subjectsToInsert = tutorSubjects.map(s => ({
+        const subjectsToInsert: Database['public']['Tables']['tutor_subjects']['Insert'][] = tutorSubjects.map(s => ({
           tutor_id: savedTutorId,
           subject_id: s.subject_id,
-          level: s.level
+          level: s.level as Database['public']['Enums']['teaching_level']
         }))
 
         const { error: subjectsError } = await supabase
           .from('tutor_subjects')
-          .insert(subjectsToInsert as any)
+          .insert(subjectsToInsert)
 
         if (subjectsError) {
           console.error('Błąd podczas zapisywania przedmiotów:', subjectsError)

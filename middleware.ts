@@ -58,7 +58,7 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Ścieżki publiczne (dostępne bez logowania)
-  const publicPaths = ['/login', '/register']
+  const publicPaths = ['/login', '/register', '/calendar']
   const isPublicPath = publicPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   )

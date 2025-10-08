@@ -6,16 +6,12 @@ import {
   IconCalendar,
   IconCash,
   IconDashboard,
-  IconHelp,
   IconInnerShadowTop,
-  IconSearch,
-  IconSettings,
   IconUser,
   IconUsers,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -45,8 +41,8 @@ const adminNavMain = [
     icon: IconUsers,
   },
   {
-    title: "Tutorzy",
-    url: "/admin/tutorzy",
+    title: "Korepetytorzy",
+    url: "/admin/korepetytorzy",
     icon: IconUser,
   },
 ]
@@ -72,30 +68,6 @@ const tutorNavMain = [
     title: "Rozliczenia",
     url: "/tutor/rozliczenia",
     icon: IconCash,
-  },
-  {
-    title: "Profil",
-    url: "/tutor/profil",
-    icon: IconUser,
-  },
-]
-
-// Menu wtórne (wspólne dla wszystkich ról)
-const navSecondary = [
-  {
-    title: "Ustawienia",
-    url: "#",
-    icon: IconSettings,
-  },
-  {
-    title: "Pomoc",
-    url: "#",
-    icon: IconHelp,
-  },
-  {
-    title: "Szukaj",
-    url: "#",
-    icon: IconSearch,
   },
 ]
 
@@ -194,7 +166,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
-        <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         {!isLoading && <NavUser user={userData} />}
