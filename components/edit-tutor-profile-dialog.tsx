@@ -220,7 +220,8 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .insert(insertPayload as any)
+          // @ts-expect-error - TypeScript ma problem z inferencją typu dla tabeli tutors
+          .insert(insertPayload)
           .select()
         
         if (result.error) {
@@ -251,7 +252,8 @@ export function EditTutorProfileDialog({
 
         result = await supabase
           .from('tutors')
-          .update(updatePayload as any)
+          // @ts-expect-error - TypeScript ma problem z inferencją typu dla tabeli tutors
+          .update(updatePayload)
           .eq('id', tutor.id)
           .select()
         
@@ -280,7 +282,8 @@ export function EditTutorProfileDialog({
 
         const { error: subjectsError } = await supabase
           .from('tutor_subjects')
-          .insert(subjectsToInsert as any)
+          // @ts-expect-error - TypeScript ma problem z inferencją typu dla tabeli tutor_subjects
+          .insert(subjectsToInsert)
 
         if (subjectsError) {
           console.error('Błąd podczas zapisywania przedmiotów:', subjectsError)
